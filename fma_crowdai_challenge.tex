@@ -36,7 +36,6 @@
 %\editor{Theo D'Hondt}
 %\editor{Wolfgang De Meuter}
 
-
 \begin{document}
 \title{Learning to Recognize Musical Genre from Audio}
 %\titlenote{}
@@ -127,7 +126,7 @@ That dataset is a collection of 917 GiB and 343 days of Creative Commons-license
 
 \section{Music Genre Recognition}
 
-Music genres are categories that have arisen through a complex interplay of cultures, artists, and market forces to characterize similarities between compositions and organize music collections. Yet, the boundaries between genres still remain fuzzy, making the problem of music genre recognition (MGR) a nontrivial task~\cite{mir_review_genre}. While its utility has been debated, mostly because of its ambiguity and cultural definition, it is widely used and understood by end-users who find it useful to discuss musical categories~\cite{mgr_why}. As such, it is one of the most researched areas in the Music Information Retrieval (MIR) field.\footnote{See e.g.\ \cite{mgr_eval_1} for an extensive list of \textasciitilde500 references to works targeting MGR as of 2012.}
+Music genres are categories that have arisen through a complex interplay of cultures, artists, and market forces to characterize similarities between compositions and organize music collections. Yet, the boundaries between genres still remain fuzzy, making the problem of music genre recognition (MGR) a nontrivial task~\cite{mir_review_genre}. While its utility has been debated, mostly because of its ambiguity and cultural definition, it is widely used and understood by end-users who find it useful to discuss musical categories~\cite{mgr_why}. As such, it is one of the most researched areas in the Music Information Retrieval (MIR) field.\footnote{See e.g.\ \cite{mgr_eval_1} for an extensive list of \textasciitilde500 references to works targeting MGR as of 2012.}
 
 % TODO: maybe remove the below.
 Given the extent to which MGR is studied, we can expect many groups from the MIR community to be interested. Moreover, given the well-defined scope of the challenge, we can expect members of the wider machine learning community to participate as well. Both communities are well versed in challenges, with e.g. Kaggle and NIPS for the ML community and the MIREX for the MIR community.
@@ -146,7 +145,7 @@ We evaluated those against a new unseen test set. These 30s clips were sampled f
 % TODO
 The participants were also asked to post online the code of their approach as well as an executive summary of the method used to be eligible for the second round.
 
-Both rounds used the same evaluation metric. The primary score was the mean log loss and the secondary score was the mean $F_1$ score.
+Both rounds used the same evaluation metric. The primary score was the mean log loss and the secondary score was the mean $F_1$ score.
 %For the subset of the test images which can have multiple correct genres, cross entropy loss with logits will be used to contribute to the final score.
 The mean log loss is defined by
 \begin{equation}
@@ -186,12 +185,29 @@ Participants were encouraged to check out the FMA paper~\cite{fma_dataset} for a
 % Ranking on round 1
 % Summarize the approaches taken by the two accepted papers (and cite them)
 
-We got more than 600 submissions from more than 35 participants.
+\begin{figure}[h]
+\label{fig:jointplot}
+\includegraphics[width=8cm]{images/plot-1}
+\centering
+\caption{Joint plot of the distribution of the $F_1 score$  and the $Log Loss$ of all valid submissions made by the participants. The point marked in red represents the baseline submission prepared by the organisers at the beginning of the challenge. The plot only considers submissions with $Log Loss < 5 $ for interpretability. }
+\end{figure}
+
+At the end of the first round of the challenge, we had engaged a total of 246 participants, who either made a submission, downloaded the datasets, or contributed in the discussion forums. From these 246 participants 59 participants made atleast one submission,   with some of the top participants making as many as 110 submissions through the period of the 1st Round of the challenge. 
+A total of 671 submissions were made in the first round, and of these, 77 were invalid submissions and 576 submissions were successfully graded. 
+From the 576 successfully graded submissions, a total of 364 submissions had a score better than the baseline submission provided by the organisers, based on their own previous work. Figure \ref{fig:jointplot} shows the distribution of the $F_1 Score$ and the $Log Loss$ for valid submissions in the challenge.
+The current rank \#1 on the leaderboard of the challenge has a $F_1 Score$ of $0.909$ and a $LogLoss$ of $0.330$, improving the state of art \textbf{(TODO: Add @michael's paper's citation)}  on this problem by \textbf{@michael: can you compute this value ?}.
+Figure \ref{fig:timeline} shows the progression of scores of all the participants through the Round-1 of the challenge, with each line representing one active participant in the challenge and their top-score at the point of time referenced by the X-axis.
+
+\begin{figure*}[h]
+\label{fig:timeline}
+\includegraphics[width=\linewidth]{images/plot-2}
+\caption{ Plot of progression of scores of all the participants through Round-1 of the challenge. Each line represents one active participant in the challenge, and their top-score at the point of time referenced by the X-axis. The dotted blue line represents the baseline score from the baseline submission.}
+\end{figure*}
 
 \section{Conclusion}
 
 That challenge is part of an effort to promote open evaluation in machine learning for music data, which the release of the open FMA dataset was the first step~\cite{fma_dataset}. The goal of the initiative is to establish a reference benchmark based on open data. MIR research has historically suffered from the lack of publicly available benchmark datasets, which stem from the commercial interest in music by record labels, and therefore imposed rigid copyright. The FMA's solution was to aim for tracks which license permits redistribution. All data and code produced during the project and challenge are released under the CC BY 4.0 and MIT licenses.
-%The release of the dataset was acclaimed online, both by scientists on Twitter and GitHub, and on the FMA blog.
+%The release of the dataset was acclaimed online, both by scientists on Twitter and GitHub, and on the FMA blog.
 
 % TODO: complete after round2
 %\appendix
