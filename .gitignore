@@ -25,3 +25,4 @@ acmart.cls
 *~
 *.bcf
 *.run.xml
+*.gz
