@@ -1,0 +1,3 @@
+[submodule "analysis"]
+	path = analysis
+	url = git@github.com:spMohanty/www-music-genre-recognition-challenge-analysis.git
