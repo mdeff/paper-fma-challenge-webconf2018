@@ -5,10 +5,10 @@
 
 
 % Copyright
-%\setcopyright{none}
+\setcopyright{none}
 %\setcopyright{acmcopyright}
 %\setcopyright{acmlicensed}
-\setcopyright{rightsretained}
+%\setcopyright{rightsretained}
 %\setcopyright{usgov}
 %\setcopyright{usgovmixed}
 %\setcopyright{cagov}
@@ -72,19 +72,20 @@
 %\renewcommand{\shortauthors}{M. Defferrard et al.}
 
 % Content
-% * show statistics (e.g. results over time for all participants)
+% * compile the initial proposal on the challenge design into a paper
 % * discuss the challenge
+% * show statistics (e.g. results over time for all participants)
+%	* include stats of participation from the challenge
 % * offer an overview of the approaches that have been tried
 % * paper corresponds to what we'll talk about at the conference
 % * summary of what we learned overall during the challenge
-% * compile the initial proposal on the challenge design into a paper
-% * include stats of participation from the challenge
-% * summary of our experience running the challenge
-% * major problems faced
-% * suggestions for future versions of the challenge
+%	* summary of our experience running the challenge
+% 	* major problems faced
+%	* suggestions for future versions of the challenge
 
 \begin{abstract}
-	todo
+	We here summarize our experience running a challenge for musical genre recognition. We present the task, the need for an open challenge, how we set it up, and some results.
+	%We show how an open challenge can help improve a task.
 \end{abstract}
 
 
@@ -121,15 +122,17 @@ The task of this challenge, one of the four official challenges of the Web Confe
 % TODO: maybe remove the below.
 Other metadata, e.g.\ the song title or artist name, were not to be used for the prediction. The submitted algorithms were required to learn how to map an audio signal, i.e.\ a time series, to one of the 16 target genres.
 
-The data for this challenge comes from the recently published FMA dataset~\cite{fma_dataset}, which is a dump of the Free Music Archive\footnote{\url{https://freemusicarchive.org}} (FMA), an interactive library of high-quality and curated audio which is freely and openly available to the public.
-That dataset is a collection of 917 GiB and 343 days of Creative Commons-licensed audio from 106,574 tracks from 16,341 artists and 14,854 albums, arranged in a hierarchical taxonomy of 161 genres. It provides full-length and high-quality audio, pre-computed features, together with track- and user-level metadata, tags, and free-form text such as biographies.
-
-\section{Music Genre Recognition}
-
 Music genres are categories that have arisen through a complex interplay of cultures, artists, and market forces to characterize similarities between compositions and organize music collections. Yet the boundaries between genres still remain fuzzy, making the problem of music genre recognition (MGR) a nontrivial task~\cite{mir_review_genre}. While its utility has been debated, mostly because of its ambiguity and cultural definition, it is widely used and understood by end-users who find it useful to discuss musical categories~\cite{mgr_why}. As such, it is one of the most researched areas in the Music Information Retrieval (MIR) field.\footnote{See e.g.\ \cite{mgr_eval_1} for an extensive list of \textasciitilde500 references to works targeting MGR as of 2012.}
 
-% TODO: maybe remove the below.
-Given the extent to which MGR is studied, we expected many groups from the MIR community to be interested. Moreover, given the well-defined scope of the challenge, we expected members of the wider machine learning community to participate as well. Both communities are well versed in challenges, with e.g. Kaggle and NIPS for the ML community and the MIREX for the MIR community.
+The data for this challenge comes from the recently published FMA dataset~\cite{fma_dataset}, a dump of the Free Music Archive (FMA).\footnote{\url{https://freemusicarchive.org}}
+The dataset is a collection of 917 GiB and 343 days of Creative Commons-licensed audio from 106,574 tracks from 16,341 artists and 14,854 albums, arranged in a hierarchical taxonomy of 161 genres.
+% Maybe remove the below
+It provides full-length and high-quality audio, pre-computed features, together with track- and user-level metadata, tags, and free-form text such as biographies.
+
+%\section{Music Genre Recognition}
+
+% Maybe remove the below.
+%Given the extent to which MGR is studied, we expected many groups from the MIR community to be interested. Moreover, given the well-defined scope of the challenge, we expected members of the wider machine learning community to participate as well. Both communities are well versed in challenges, with e.g. Kaggle and NIPS for the ML community and the MIREX for the MIR community.
 
 \section{The Challenge}
 
@@ -145,37 +148,27 @@ We evaluated those against a new unseen test set. These 30s clips were sampled f
 % TODO
 The participants were also asked to post online the code of their approach as well as an executive summary of the method used to be eligible for the second round.
 
-Both rounds used the same evaluation metric. The primary score was the mean log loss and the secondary score was the mean $F_1$ score.
+Both rounds used the same evaluation metric. The primary score was the mean log loss and the secondary score was the mean F1 score.
 %For the subset of the test images which can have multiple correct genres, cross entropy loss with logits will be used to contribute to the final score.
 The mean log loss is defined by
 \begin{equation}
 	L = - \frac{1}{N} \sum_{n=1}^N \sum_{c=1}^{C} y_{nc} \ln(p_{nc}),
 \end{equation}
 where $N=35000$ is the number of examples in the test set,
-$C=16$ is the number of class labels, i.e.\ genres,
-$y_{nc}$ is a binary value indicating if the n-th instance belongs to the $c$-th label,
-$p_{nc}$ is the probability according to your submission that the $n$-th instance belongs to the $c$-th label,
-$\ln$ is the natural logarithmic function.
-The $F_1$ score for a particular class $c$ is given by
+$C=16$ is the number of genres,
+$y_{nc}$ is a binary value indicating if the $n$-th instance belongs to the $c$-th label,
+$p_{nc}$ is the probability according to a submission that the $n$-th instance belongs to the $c$-th label,
+and $\ln$ is the natural logarithm.
+The mean F1 score is given by
 \begin{equation}
-	F_1^c = 2\frac{p^c r^c}{p^c + r^c}, \hspace{1em}
+	F_1 = \frac{2}{C} \sum_{c=1}^{C} \frac{p^c r^c}{p^c + r^c}, \hspace{1em}
 	p^c = \frac{tp^c}{tp^c + fp^c}, \hspace{1em}
 	r^c = \frac{tp^c}{tp^c + fn^c},
 \end{equation}
-where
-$p^c$ is the precision for class $c$,
-$r^c$ is the recall,
-$tp^c$ refers to the number of true positives,
-$fp^c$ refers to the number of false positives,
-$fn^c$ refers to the number of false negatives.
-The final mean $F_1$ score is then defined as
-\begin{equation}
-	F_1 = \frac{1}{C} \sum_{c=1}^{C} F_1^c.
-\end{equation}
+where $p^c$ an $r^c$ are the precision and recall for class $c$, and $tp^c$, $fp^c$, $fn^c$ refers to the number of true positives, false positives, and false negatives.
 
-The challenge was hosted on www.crowdAI.org, a public platform for open challenges. Instructions on how to participate, access to training and test data, graded submissions, and the leaderboard were available on the challenge page.\footnote{\url{https://www.crowdai.org/challenges/www-2018-challenge-learning-to-recognize-musical-genre}}
-Moreover, we developed a starter kit\footnote{\url{https://github.com/crowdAI/crowdai-musical-genre-recognition-starter-kit}} which included code to handle the data and make a submission. It also featured some examples and a baseline.
-
+The challenge was hosted on crowdAI, a public platform for open challenges. Instructions on how to participate, access to training and test data, graded submissions, and the leaderboard were available on the challenge page.\footnote{\url{https://www.crowdai.org/challenges/www-2018-challenge-learning-to-recognize-musical-genre}}
+Moreover, we developed a starter kit\footnote{\url{https://github.com/crowdAI/crowdai-musical-genre-recognition-starter-kit}} with code to handle the data and make a submission. It also featured some examples and a baseline.
 Participants were encouraged to review the FMA paper~\cite{fma_dataset} for a detailed description of the data as well as the GitHub repository\footnote{\url{https://github.com/mdeff/fma}} for Jupyter notebooks showing how to use the data, exploring it, and training baseline models.\footnote{This challenge used the \texttt{rc1} version of the data.}
 
 \section{Results}
@@ -185,26 +178,35 @@ Participants were encouraged to review the FMA paper~\cite{fma_dataset} for a de
 % Ranking on round 1
 % Summarize the approaches taken by the two accepted papers (and cite them)
 
-\begin{figure}[h]
-\label{fig:jointplot}
-\includegraphics[width=8cm]{images/plot-1}
+\begin{figure}[t]
 \centering
-\caption{Joint plot of the distribution of the $F_1 score$  and the $Log Loss$ of all valid submissions made by the participants. The point marked in red represents the baseline submission prepared by the organisers at the beginning of the challenge. The plot only considers submissions with $Log Loss < 5 $ for interpretability. }
+\includegraphics[width=\linewidth,height=3.3cm]{images/plot-1}
+\caption{Joint distribution of the F1 score and the log loss of all valid submissions. The red point represents the baseline prepared by the organizers at the beginning of the challenge. The plot only considers submissions with log loss < 5 for interpretability.}
+\label{fig:jointplot}
 \end{figure}
 
-At the end of the first round of the challenge, we had engaged a total of 246 participants, who either made a submission, downloaded the datasets, or contributed in the discussion forums. From these 246 participants, 38 participants made at least one submission, with some of the top participants making as many as 110 submissions throughout the 1st round of the challenge.
-A total of 671 submissions were made in the first round, and of these, 77 were invalid submissions and 576 submissions were successfully graded. 
-From the 576 successfully graded submissions, a total of 364 submissions had a score better than the baseline submission provided by the organisers, based on their own previous work. Figure \ref{fig:jointplot} shows the distribution of the $F_1 Score$ and the $Log Loss$ for valid submissions in the challenge.
-The current rank \#1 on the leaderboard of the challenge has a $F_1 Score$ of $0.909$ and a $LogLoss$ of $0.330$, improving the state of art \textbf{(TODO: Add @michael's paper's citation)}  on this problem by \textbf{@michael: can you compute this value ?}.
-Figure \ref{fig:timeline} shows the progression of scores of all the participants through the Round-1 of the challenge, with each line representing one active participant in the challenge and their top-score at the point of time referenced by the x-axis.
+%TODO: talk about the baseline?
 
-\begin{figure*}[h]
-\label{fig:timeline}
+At the end of the first round, we had engaged a total of 246 participants, who either made a submission, downloaded the datasets, or contributed in the discussion forums. From these 246 participants, 38 made at least one submission, with some of the top participants making as many as 110 submissions throughout the first round.
+A total of 671 submissions were made in the first round. Of these, 77 were invalid and 576 were successfully graded.
+From those 576 submissions, 364 had a score better than the baseline provided by the organizers. Figure~\ref{fig:jointplot} shows the distribution of F1 scores and log losses for valid submissions.
+The current best solution has a F1 score of $0.909$ and a log loss of $0.330$. %,improving the state of art \textbf{(TODO: Add @michael's paper's citation)}  on this problem by \textbf{@michael: can you compute this value ?}.
+Figure~\ref{fig:timeline} shows the score progression of all the participants.
+
+Moreover, we reviewed and accepted two papers, one exploring gradient boosting techniques~\cite{gradient_boosting}, the other transfer learning~\cite{transfer_learning}.
+
+%We are now proceeding with the second round.
+
+\begin{figure}[t]
+\centering
 \includegraphics[width=\linewidth]{images/plot-2}
-\caption{ Plot of progression of scores of all the participants through round 1 of the challenge. Each line represents one active participant in the challenge, and their top-score at the point of time referenced by the x-axis. The dotted blue line represents the baseline score from the baseline submission.}
-\end{figure*}
+\caption{Score progression of all participants through the first round of the challenge. Each line represents an active participant. Their top F1 score is indicated on the y-axis at the point of time referenced by the x-axis. The dotted blue line represents the baseline.}
+\label{fig:timeline}
+\end{figure}
 
 \section{Conclusion}
+
+The outcome of this challenge are multiple: the two accepted papers presented a new perspective and introduced new methods for genre classification. While only two papers were accepted, all the participants to the second round will have to open-source their code. That will be useful to the community as baselines or to study how those models perform in other settings. Finally, the challenge introduced participants to the new FMA open dataset and was an opportunity for them to get familiar with it.
 
 That challenge was part of a wider effort to promote open evaluation in machine learning for music data, of which the release of the open FMA dataset was the first step~\cite{fma_dataset}. The goal of the initiative is to establish a reference benchmark based on open data. MIR research has historically suffered from the lack of publicly available benchmark datasets, which stem from the commercial interest in music by record labels, and therefore imposed rigid copyright. The FMA's solution was to aim for tracks which license permits redistribution. All data and code produced during the project and challenge are released under the CC BY 4.0 and MIT licenses.
 %The release of the dataset was acclaimed online, both by scientists on Twitter and GitHub, and on the FMA blog.
