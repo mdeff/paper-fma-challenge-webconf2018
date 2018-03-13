@@ -1,30 +1,29 @@
-# Makefile for acmart package
-# This file is in public domain
-# $Id: Makefile,v 1.10 2016/04/14 21:55:57 boris Exp $
+TEX = $(wildcard *.tex)
+PDF = $(TEX:.tex=.pdf)
+BBL = $(TEX:.tex=.bbl)
+BIB = $(wildcard *.bib)
+STY = $(wildcard *.sty)
 
-PACKAGE=acmart
+all: $(PDF)
 
-all: fma_crowdai_challenge.pdf
+%.pdf: %.tex $(BIB)
+	latexmk -pdf $<
 
-%.cls:   %.ins %.dtx
-	pdflatex $<
-
-%.pdf:  %.tex   $(PACKAGE).cls ACM-Reference-Format.bst
-	pdflatex $<
-	- bibtex $*
-	pdflatex $<
-	pdflatex $<
-	while ( grep -q '^LaTeX Warning: Label(s) may have changed' $*.log) \
-	do pdflatex $<; done
-
-.PRECIOUS:  $(PACKAGE).cfg $(PACKAGE).cls
+%.bbl: %.tex $(BIB)
+	latexmk -pdf $<
 
 clean:
-	$(RM)  $(PACKAGE).cls *.log *.aux \
-	*.cfg *.glo *.idx *.toc \
-	*.ilg *.ind *.out *.lof \
-	*.lot *.bbl *.blg *.gls *.cut *.hd \
-	*.dvi *.ps *.thm *.tgz *.zip *.rpi
+	rm -f *.{aux,bbl,blg,fdb_latexmk,fls,log,out,lof,dvi}
+	rm -f *.{bcf,run.xml}
+	rm -f *.{toc,snm,nav}
+	rm -f *.gz*
+	rm -f *.pdfpc
 
-distclean: clean
-	$(RM) $(PDF) *-converted-to.pdf
+cleanall: clean
+	rm -f $(PDF)
+	rm -f arxiv.zip
+
+arxiv.zip: $(PDF) $(BBL) $(STY)
+	apack arxiv.zip $(TEX) $(BBL) $(STY) analysis/*.pdf
+
+.PHONY: all clean cleanall
