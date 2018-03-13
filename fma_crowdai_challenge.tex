@@ -193,7 +193,18 @@ From those 576 submissions, 364 had a score better than the baseline provided by
 The current best solution has a F1 score of $0.909$ and a log loss of $0.330$. %,improving the state of art \textbf{(TODO: Add @michael's paper's citation)}  on this problem by \textbf{@michael: can you compute this value ?}.
 Figure~\ref{fig:timeline} shows the score progression of all the participants.
 
-Moreover, we reviewed and accepted two papers, one exploring gradient boosting techniques~\cite{gradient_boosting}, the other transfer learning~\cite{transfer_learning}.
+Moreover, we reviewed and accepted two papers.
+% one exploring gradient boosting techniques~\cite{gradient_boosting}, the other transfer learning~\cite{transfer_learning}.
+%
+In~\cite{gradient_boosting}, the authors compared the following approaches: (i) ConvNet on spectrograms, and (ii) deep neural net, (iii) ExtraTrees, and (iv) XGBoost on higher-level features extracted by Essentia. They found that ensemble methods outperformed neural networks, with XGBoost performing best.
+%
+%Their insight is that
+%They then exploited the fact that
+In~\cite{transfer_learning}, the authors argued that genres are subjective and noisy labels, whereas artists are more objective labels.
+As an artist is commonly part a subset of genres, and that sets of artists can be seen as exemplars for genres, they hypothesized that musical characteristics which identify an artist may also be key features of certain genres.
+As such, they proposed to train a multi-task neural network to jointly predict artist group and genre. Results showed that features learned for artist recognition were indeed useful for MGR.
+They thus achieved transfer learning, though keeping the main MGR task as one of the multiple subtasks was crucial.
+%They found that jointly learning multiple tasks targeted at artist recognition (in addition to genre) helped extract features which boosted the genre recognition performance.
 
 %We are now proceeding with the second round.
 
