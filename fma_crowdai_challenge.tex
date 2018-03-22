@@ -1,3 +1,4 @@
+\PassOptionsToPackage{hyphens}{url}
 \documentclass[sigconf]{acmart}
 
 \usepackage[utf8]{inputenc}
@@ -13,6 +14,8 @@
 \acmPrice{}
 \acmDOI{10.1145/3184558.3192310}
 \acmISBN{978-1-4503-5640-4/18/04}
+
+\fancyhead{}
 
 \begin{document}
 \title{Learning to Recognize Musical Genre from Audio}
@@ -166,11 +169,9 @@ Finally, participants were encouraged to review the FMA paper~\cite{fma_dataset}
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{analysis/score_distributions}
-\caption[dummy]{Joint distribution of the F1 score and the log loss of all submissions.{\footnotemark} The red point represents the baseline prepared by the organizers.}
+\caption{Joint distribution of the F1 score and the log loss (if smaller than 5) of all submissions. The red point represents the baseline prepared by the organizers.}
 \label{fig:jointplot}
 \end{figure}
-
-\footnotetext{The plot only shows submissions with log loss < 5.}
 
 %TODO: talk about the baseline?
 
